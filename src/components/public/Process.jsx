@@ -7,7 +7,7 @@ const icons = [Compass, Workflow, FlaskConical, Rocket];
 
 export default function Process() {
   return (
-    <section className="px-4 py-24 sm:px-6 lg:px-8">
+    <section id="process" className="px-4 py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionIntro
           eyebrow="Our Process"

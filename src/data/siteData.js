@@ -1,13 +1,13 @@
 export const initialContent = {
   hero: {
-    eyebrow: "Digital innovation agency for ambitious brands",
-    title: "Transforming ideas into high-performing digital experiences.",
+    eyebrow: "Web, product, and growth systems for ambitious businesses",
+    title: "Websites and digital products built to turn attention into qualified demand.",
     description:
-      "Fluxion Innovations helps businesses scale with custom software, modern websites, AI solutions, and performance-led digital marketing.",
-    primaryCtaLabel: "Start Project",
+      "Fluxion Innovations helps founders and teams launch premium websites, internal tools, and AI-enabled workflows with sharper positioning, faster execution, and clearer conversion paths.",
+    primaryCtaLabel: "Book Discovery Call",
     primaryCtaHref: "#contact",
-    secondaryCtaLabel: "Contact Us",
-    secondaryCtaHref: "#footer",
+    secondaryCtaLabel: "See Recent Work",
+    secondaryCtaHref: "#work",
   },
   services: [
     {

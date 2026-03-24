@@ -5,12 +5,12 @@ import SectionIntro from "../ui/SectionIntro";
 
 export default function Portfolio() {
   return (
-    <section className="px-4 py-24 sm:px-6 lg:px-8">
+    <section id="work" className="px-4 py-24 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <SectionIntro
-          eyebrow="Case Studies"
-          title="Selected work shaped around strong visual systems and clear business outcomes."
-          description="A preview of the type of digital products, marketing platforms, and conversion-first experiences we help teams bring to market."
+          eyebrow="Selected Work"
+          title="Representative engagements focused on positioning, conversion, and launch quality."
+          description="A snapshot of the kind of websites, product surfaces, and growth systems we help teams bring to market. Full case study walkthroughs are shared during discovery."
         />
 
         <div className="mt-14 grid gap-5 lg:grid-cols-2">
@@ -30,17 +30,22 @@ export default function Portfolio() {
                     <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-slate-300">
                       {item.category}
                     </span>
-                    <button className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition group-hover:bg-white group-hover:text-slate-950">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition group-hover:bg-white group-hover:text-slate-950">
                       <ArrowUpRight size={18} />
-                    </button>
+                    </span>
                   </div>
                   <div>
-                    <p className="text-sm uppercase tracking-[0.32em] text-slate-400">View Project</p>
+                    <p className="text-sm uppercase tracking-[0.32em] text-slate-400">Case study available on request</p>
                     <h3 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-white">
                       {item.title}
                     </h3>
                   </div>
                 </div>
+                <a
+                  href="#contact"
+                  className="absolute inset-0"
+                  aria-label={`Request details for ${item.title}`}
+                />
               </div>
             </motion.article>
           ))}

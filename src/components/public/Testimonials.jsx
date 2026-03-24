@@ -38,7 +38,7 @@ export default function Testimonials() {
                   <Quote size={22} />
                 </div>
                 <p className="mt-8 max-w-3xl text-2xl font-medium leading-10 text-white sm:text-3xl sm:leading-[3rem]">
-                  “{testimonials[activeIndex].quote}”
+                  "{testimonials[activeIndex].quote}"
                 </p>
                 <div className="mt-10 flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-cyan-100">

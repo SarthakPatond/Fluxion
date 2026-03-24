@@ -1,7 +1,7 @@
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { useSiteContent } from "../../context/SiteContentContext";
 
-const quickLinks = ["Home", "Services", "About", "Blog", "Careers", "Contact"];
+const quickLinks = ["Home", "Services", "About", "Work", "Process", "Contact"];
 const serviceLinks = [
   "AI Strategy",
   "Website Development",
@@ -13,7 +13,7 @@ const serviceLinks = [
 
 function linkHref(label) {
   if (label === "Home") return "#hero";
-  if (label === "Contact") return "#footer";
+  if (label === "Contact") return "#contact";
   return `#${label.toLowerCase()}`;
 }
 
@@ -21,6 +21,7 @@ export default function Footer() {
   const {
     content: { settings },
   } = useSiteContent();
+  const whatsappNumber = settings.whatsapp.replace(/\D/g, "");
 
   return (
     <footer id="footer" className="px-4 pb-8 pt-20 sm:px-6 lg:px-8">
@@ -38,19 +39,35 @@ export default function Footer() {
                 <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Digital innovation agency</p>
               </div>
             </div>
+
             <p className="mt-6 max-w-md text-sm leading-7 text-slate-300">
               We design and build premium digital experiences that combine strategy, technology, and growth execution.
             </p>
-            <div className="mt-6 flex gap-3">
-              {[Instagram, Facebook, Linkedin].map((Icon, index) => (
-                <a
-                  key={index}
-                  href="#footer"
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-200 transition hover:border-cyan-300/40 hover:text-white"
-                >
-                  <Icon size={18} />
-                </a>
-              ))}
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={`mailto:${settings.email}`}
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-200 transition hover:border-cyan-300/40 hover:text-white"
+              >
+                <Mail size={16} />
+                Email
+              </a>
+              <a
+                href={`tel:${settings.phone.replace(/\s+/g, "")}`}
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-200 transition hover:border-cyan-300/40 hover:text-white"
+              >
+                <Phone size={16} />
+                Call
+              </a>
+              <a
+                href={`https://wa.me/${whatsappNumber}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-200 transition hover:border-cyan-300/40 hover:text-white"
+              >
+                <MessageCircle size={16} />
+                WhatsApp
+              </a>
             </div>
           </div>
 
@@ -85,11 +102,15 @@ export default function Footer() {
               </p>
               <p className="flex items-center gap-3">
                 <Phone size={18} className="shrink-0 text-cyan-100" />
-                <span>{settings.phone}</span>
+                <a href={`tel:${settings.phone.replace(/\s+/g, "")}`} className="transition hover:text-white">
+                  {settings.phone}
+                </a>
               </p>
               <p className="flex items-center gap-3">
                 <Mail size={18} className="shrink-0 text-cyan-100" />
-                <span>{settings.email}</span>
+                <a href={`mailto:${settings.email}`} className="transition hover:text-white">
+                  {settings.email}
+                </a>
               </p>
             </div>
           </div>
