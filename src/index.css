@@ -25,6 +25,7 @@
 
   body {
     @apply bg-background font-body text-foreground antialiased;
+    overflow-x: hidden;
     background-image:
       radial-gradient(circle at top, rgba(34, 211, 238, 0.08), transparent 24%),
       linear-gradient(180deg, rgba(15, 23, 42, 0.65) 0%, rgba(2, 6, 23, 1) 48%, rgba(2, 6, 23, 1) 100%);
@@ -45,17 +46,53 @@
   select,
   textarea {
     @apply outline-none;
+    max-width: 100%;
   }
 
   :focus-visible {
     outline: 2px solid rgba(103, 232, 249, 0.92);
     outline-offset: 3px;
   }
+
+  img,
+  svg,
+  canvas {
+    max-width: 100%;
+  }
 }
 
 @layer components {
   .glass-panel {
     @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  }
+
+  .section-shell {
+    @apply px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28;
+  }
+
+  .section-shell-tight {
+    @apply px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24;
+  }
+
+  .content-shell {
+    @apply mx-auto w-full max-w-7xl;
+  }
+
+  .content-shell-narrow {
+    @apply mx-auto w-full max-w-5xl;
+  }
+
+  .text-safe {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .eyebrow-text {
+    @apply text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-100/70 sm:text-xs sm:tracking-[0.32em];
   }
 }
 
@@ -64,6 +101,35 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+}
+
+.article-content p,
+.article-content ul,
+.article-content ol {
+  color: rgb(203 213 225);
+  font-size: 1rem;
+  line-height: 2rem;
+}
+
+.article-content p + p,
+.article-content p + ul,
+.article-content p + ol,
+.article-content ul + p,
+.article-content ol + p {
+  margin-top: 1.5rem;
+}
+
+.article-content h2,
+.article-content h3 {
+  color: white;
+  letter-spacing: -0.04em;
+  margin-top: 2rem;
+  line-height: 1.1;
+}
+
+.article-content ul,
+.article-content ol {
+  padding-left: 1.5rem;
 }
 
 .tilted-card-figure {
@@ -170,4 +236,3 @@
     transition-duration: 0.01ms !important;
   }
 }
-

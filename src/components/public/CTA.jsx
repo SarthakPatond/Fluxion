@@ -50,65 +50,65 @@ export default function CTA() {
   }
 
   return (
-    <section id="contact" className="px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <section id="contact" className="section-shell">
+      <div className="content-shell">
         <Reveal>
-          <div className="overflow-hidden rounded-[2.4rem] border border-white/10 bg-[linear-gradient(135deg,rgba(34,211,238,0.16),rgba(255,255,255,0.05),rgba(250,204,21,0.12))] p-8 shadow-[0_30px_120px_rgba(2,8,23,0.35)] sm:p-12">
-            <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+          <div className="overflow-hidden rounded-[2.4rem] border border-white/10 bg-[linear-gradient(135deg,rgba(34,211,238,0.16),rgba(255,255,255,0.05),rgba(250,204,21,0.12))] p-6 shadow-[0_30px_120px_rgba(2,8,23,0.35)] sm:p-8 lg:p-12">
+            <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-12">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-cyan-100/70">
+                <p className="eyebrow-text text-safe">
                   Start a Project
                 </p>
-                <h2 className="mt-5 text-4xl font-semibold tracking-[-0.05em] text-white sm:text-5xl lg:text-6xl">
+                <h2 className="text-balance text-safe mt-5 text-3xl font-semibold leading-[1.02] tracking-[-0.05em] text-white sm:text-4xl lg:text-5xl xl:text-6xl">
                   Turn the next conversation into a concrete plan.
                 </h2>
-                <p className="mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+                <p className="text-safe mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
                   Share what you are building, where the funnel or product is underperforming, and what outcome matters most. We will reply with the right next step, not a generic sales sequence.
                 </p>
 
                 <div className="mt-8 grid gap-4">
                   <a
                     href={`mailto:${settings.email}`}
-                    className="flex items-center justify-between rounded-[1.6rem] border border-white/10 bg-slate-950/50 px-5 py-4 text-left transition hover:border-cyan-300/40"
+                    className="flex flex-wrap items-center justify-between gap-4 rounded-[1.6rem] border border-white/10 bg-slate-950/50 px-5 py-4 text-left transition hover:border-cyan-300/40"
                   >
-                    <span className="flex items-center gap-3">
+                    <span className="flex min-w-0 items-center gap-3">
                       <Mail size={18} className="text-cyan-100" />
-                      <span>
+                      <span className="min-w-0">
                         <span className="block text-sm text-slate-400">Email us</span>
-                        <span className="text-base font-semibold text-white">{settings.email}</span>
+                        <span className="text-safe block text-base font-semibold text-white">{settings.email}</span>
                       </span>
                     </span>
-                    <ArrowRight size={18} className="text-white" />
+                    <ArrowRight size={18} className="shrink-0 text-white" />
                   </a>
 
                   <a
                     href={`tel:${settings.phone.replace(/\s+/g, "")}`}
-                    className="flex items-center justify-between rounded-[1.6rem] border border-white/10 bg-slate-950/50 px-5 py-4 text-left transition hover:border-cyan-300/40"
+                    className="flex flex-wrap items-center justify-between gap-4 rounded-[1.6rem] border border-white/10 bg-slate-950/50 px-5 py-4 text-left transition hover:border-cyan-300/40"
                   >
-                    <span className="flex items-center gap-3">
+                    <span className="flex min-w-0 items-center gap-3">
                       <PhoneCall size={18} className="text-cyan-100" />
-                      <span>
+                      <span className="min-w-0">
                         <span className="block text-sm text-slate-400">Call us</span>
-                        <span className="text-base font-semibold text-white">{settings.phone}</span>
+                        <span className="text-safe block text-base font-semibold text-white">{settings.phone}</span>
                       </span>
                     </span>
-                    <ArrowRight size={18} className="text-white" />
+                    <ArrowRight size={18} className="shrink-0 text-white" />
                   </a>
 
                   <a
                     href={`https://wa.me/${whatsappNumber}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-between rounded-[1.6rem] border border-white/10 bg-slate-950/50 px-5 py-4 text-left transition hover:border-cyan-300/40"
+                    className="flex flex-wrap items-center justify-between gap-4 rounded-[1.6rem] border border-white/10 bg-slate-950/50 px-5 py-4 text-left transition hover:border-cyan-300/40"
                   >
-                    <span className="flex items-center gap-3">
+                    <span className="flex min-w-0 items-center gap-3">
                       <MessageCircle size={18} className="text-cyan-100" />
-                      <span>
+                      <span className="min-w-0">
                         <span className="block text-sm text-slate-400">WhatsApp</span>
-                        <span className="text-base font-semibold text-white">{settings.whatsapp}</span>
+                        <span className="text-safe block text-base font-semibold text-white">{settings.whatsapp}</span>
                       </span>
                     </span>
-                    <ArrowRight size={18} className="text-white" />
+                    <ArrowRight size={18} className="shrink-0 text-white" />
                   </a>
                 </div>
 
@@ -119,7 +119,7 @@ export default function CTA() {
 
               <form
                 onSubmit={handleSubmit}
-                className="rounded-[2rem] border border-white/10 bg-slate-950/55 p-6 backdrop-blur-xl sm:p-7"
+                className="rounded-[2rem] border border-white/10 bg-slate-950/55 p-5 backdrop-blur-xl sm:p-6 lg:p-7"
               >
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="block">
@@ -208,7 +208,7 @@ export default function CTA() {
 
                 <button
                   type="submit"
-                  className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 text-sm font-semibold text-slate-950 transition hover:scale-[1.02]"
+                  className="text-safe mt-6 inline-flex min-h-12 max-w-full items-center gap-2 rounded-full bg-white px-5 py-3 text-center text-sm font-semibold text-slate-950 transition hover:scale-[1.02] sm:px-7 sm:py-4"
                 >
                   Send Project Brief
                   <ArrowRight size={18} />

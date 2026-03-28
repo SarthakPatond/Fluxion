@@ -4,14 +4,14 @@ export default function SectionIntro({ eyebrow, title, description, align = "lef
   const alignClass = align === "center" ? "text-center mx-auto" : "";
 
   return (
-    <Reveal className={`max-w-2xl ${alignClass}`}>
-      <p className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-cyan-200/70">
+    <Reveal className={`max-w-3xl ${alignClass}`}>
+      <p className="eyebrow-text mb-4 text-safe">
         {eyebrow}
       </p>
-      <h2 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
+      <h2 className="text-balance text-safe max-w-4xl text-3xl font-semibold leading-[1.02] tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl xl:text-6xl">
         {title}
       </h2>
-      <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+      <p className="text-safe mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
         {description}
       </p>
     </Reveal>

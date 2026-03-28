@@ -4,11 +4,11 @@ import Reveal from "../ui/Reveal";
 
 export default function ClientLogos() {
   return (
-    <section className="px-4 py-14 sm:px-6 lg:px-8 overflow-hidden">
-      <div className="mx-auto max-w-7xl">
+    <section className="section-shell-tight overflow-hidden">
+      <div className="content-shell">
 
         <Reveal className="mb-10">
-          <p className="text-center text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
+          <p className="text-safe text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500 sm:text-xs sm:tracking-[0.35em]">
             Trusted by growing brands and emerging teams
           </p>
         </Reveal>
@@ -16,8 +16,8 @@ export default function ClientLogos() {
         <div className="relative overflow-hidden">
 
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-[#020617] to-transparent z-10"/>
-          <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-[#020617] to-transparent z-10"/>
+          <div className="absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-[#020617] to-transparent sm:w-24 lg:w-32"/>
+          <div className="absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-[#020617] to-transparent sm:w-24 lg:w-32"/>
 
           <motion.div
             animate={{ x: ["0%", "-50%"] }}
@@ -27,21 +27,21 @@ export default function ClientLogos() {
               ease: "linear",
             }}
             className="
-              flex gap-6 w-max
+              flex w-max gap-4 sm:gap-6
               perspective-[1000px]
-              rotate-x-[15deg]
+              rotate-x-[10deg] sm:rotate-x-[15deg]
             "
           >
             {[...clientLogos, ...clientLogos].map((logo, index) => (
               <div
                 key={index}
                 className="
-                min-w-[200px]
+                min-w-[160px] sm:min-w-[200px]
                 rounded-[1.6rem]
                 border border-white/10
                 bg-white/[0.03]
-                px-6 py-5
-                text-center text-sm font-medium uppercase tracking-[0.25em]
+                px-5 py-4 sm:px-6 sm:py-5
+                text-safe text-center text-xs font-medium uppercase tracking-[0.2em] sm:text-sm sm:tracking-[0.25em]
                 text-slate-500
                 grayscale
                 transition

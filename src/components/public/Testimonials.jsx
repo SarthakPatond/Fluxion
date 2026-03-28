@@ -16,8 +16,8 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section className="px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <section className="section-shell">
+      <div className="content-shell">
         <SectionIntro
           eyebrow="Testimonials"
           title="Clients stay because the work feels thoughtful, clear, and commercially useful."
@@ -25,7 +25,7 @@ export default function Testimonials() {
         />
 
         <div className="mt-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(34,211,238,0.12),rgba(255,255,255,0.04),rgba(250,204,21,0.12))] p-8">
+          <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(34,211,238,0.12),rgba(255,255,255,0.04),rgba(250,204,21,0.12))] p-6 sm:p-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={testimonials[activeIndex].id}
@@ -37,7 +37,7 @@ export default function Testimonials() {
                 <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white">
                   <Quote size={22} />
                 </div>
-                <p className="mt-8 max-w-3xl text-2xl font-medium leading-10 text-white sm:text-3xl sm:leading-[3rem]">
+                <p className="text-balance text-safe mt-8 max-w-3xl text-xl font-medium leading-9 text-white sm:text-2xl sm:leading-10 lg:text-3xl lg:leading-[3rem]">
                   "{testimonials[activeIndex].quote}"
                 </p>
                 <div className="mt-10 flex items-center gap-4">
@@ -49,8 +49,8 @@ export default function Testimonials() {
                       .slice(0, 2)}
                   </div>
                   <div>
-                    <p className="font-semibold text-white">{testimonials[activeIndex].name}</p>
-                    <p className="text-sm text-slate-400">{testimonials[activeIndex].company}</p>
+                    <p className="text-safe font-semibold text-white">{testimonials[activeIndex].name}</p>
+                    <p className="text-safe text-sm text-slate-400">{testimonials[activeIndex].company}</p>
                   </div>
                 </div>
               </motion.div>
@@ -69,11 +69,11 @@ export default function Testimonials() {
                     : "border-white/10 bg-white/[0.03]"
                 }`}
               >
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-slate-500">
+                <p className="text-safe text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500 sm:text-sm sm:tracking-[0.28em]">
                   {item.company}
                 </p>
-                <p className="mt-3 text-lg font-medium text-white">{item.name}</p>
-                <p className="mt-2 text-sm leading-7 text-slate-300">{item.quote}</p>
+                <p className="text-safe mt-3 text-lg font-medium text-white">{item.name}</p>
+                <p className="text-safe mt-2 text-sm leading-7 text-slate-300">{item.quote}</p>
               </button>
             ))}
           </div>

@@ -1,8 +1,15 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SiteContentProvider } from "./context/SiteContentContext";
+import ScrollManager from "./components/public/ScrollManager";
 
 const Home = lazy(() => import("./pages/public/Home"));
+const ServicesPage = lazy(() => import("./pages/public/ServicesPage"));
+const AboutPage = lazy(() => import("./pages/public/AboutPage"));
+const BlogPage = lazy(() => import("./pages/public/BlogPage"));
+const BlogPostPage = lazy(() => import("./pages/public/BlogPostPage"));
+const CareersPage = lazy(() => import("./pages/public/CareersPage"));
+const ContactPage = lazy(() => import("./pages/public/ContactPage"));
 const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
 const DashboardOverview = lazy(() => import("./pages/admin/DashboardOverview"));
 const BannerManager = lazy(() => import("./pages/admin/BannerManager"));
@@ -24,9 +31,16 @@ function App() {
   return (
     <SiteContentProvider>
       <BrowserRouter>
+        <ScrollManager />
         <Suspense fallback={<LoadingScreen />}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:postId" element={<BlogPostPage />} />
+            <Route path="/careers" element={<CareersPage />} />
+            <Route path="/contact" element={<ContactPage />} />
 
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<DashboardOverview />} />

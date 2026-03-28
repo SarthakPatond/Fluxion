@@ -36,8 +36,8 @@ export default function Services() {
   } = useSiteContent();
 
   return (
-    <section id="services" className="px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <section id="services" className="section-shell">
+      <div className="content-shell">
         <SectionIntro
           eyebrow="Our Services"
           title="Digital systems built for visibility, growth, and product velocity."
@@ -55,22 +55,22 @@ export default function Services() {
               // whileHover={{ y: -8 }}
               whileHover={{
                 y: -10,
-                rotateX: 6,
-                rotateY: -6,
-                scale: 1.03,
+                rotateX: 3,
+                rotateY: -3,
+                scale: 1.015,
               }}
-              className="group rounded-[1.8rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] p-6 shadow-[0_20px_70px_rgba(2,8,23,0.24)] backdrop-blur-xl"
+              className="group flex h-full min-w-0 flex-col rounded-[1.8rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] p-5 shadow-[0_20px_70px_rgba(2,8,23,0.24)] backdrop-blur-xl sm:p-6"
             >
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-cyan-300/10">
                 <ServiceIcon name={service.icon} />
               </div>
-              <p className="mt-6 text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200/70">
+              <p className="eyebrow-text mt-6 text-safe">
                 {service.category}
               </p>
-              <h3 className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white">
+              <h3 className="text-balance text-safe mt-3 text-2xl font-semibold leading-tight tracking-[-0.04em] text-white">
                 {service.title}
               </h3>
-              <p className="mt-4 text-sm leading-7 text-slate-300">{service.description}</p>
+              <p className="text-safe mt-4 text-sm leading-7 text-slate-300">{service.description}</p>
             </motion.article>
           ))}
         </div>
