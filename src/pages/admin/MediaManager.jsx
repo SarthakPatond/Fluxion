@@ -18,6 +18,8 @@ export default function MediaManager() {
       items={content.mediaItems}
       fields={fields}
       searchKeys={["name", "type", "usage", "url"]}
+      createLabel="Add Asset"
+      entityLabel="Asset"
       onAdd={(payload) => addItem("mediaItems", payload)}
       onUpdate={(id, payload) => updateItem("mediaItems", id, payload)}
       onDelete={(id) => deleteItem("mediaItems", id)}

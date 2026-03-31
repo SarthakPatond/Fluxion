@@ -1,23 +1,37 @@
 import { useMemo, useState } from "react";
-import { Edit3, Plus, Search, Trash2, X } from "lucide-react";
+import { Edit3, FilePenLine, Plus, Trash2 } from "lucide-react";
 import RichTextEditor from "../../components/admin/RichTextEditor";
+import {
+  AdminBadge,
+  AdminButton,
+  AdminCard,
+  AdminDataTable,
+  AdminField,
+  AdminInput,
+  AdminModal,
+  AdminPageHeader,
+  AdminSearchInput,
+  AdminTextarea,
+} from "../../components/admin/AdminUI";
 import { useSiteContent } from "../../context/SiteContentContext";
 
-const emptyDraft = {
-  title: "",
-  category: "",
-  date: "",
-  readTime: "",
-  excerpt: "",
-  body: "",
-};
+function createEmptyDraft() {
+  return {
+    title: "",
+    category: "",
+    date: "",
+    readTime: "",
+    excerpt: "",
+    body: "",
+  };
+}
 
 export default function BlogManager() {
   const { content, addItem, updateItem, deleteItem } = useSiteContent();
   const [query, setQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [draft, setDraft] = useState(emptyDraft);
+  const [draft, setDraft] = useState(createEmptyDraft);
 
   const filteredPosts = useMemo(() => {
     if (!query.trim()) {
@@ -33,9 +47,38 @@ export default function BlogManager() {
     );
   }, [content.blogPosts, query]);
 
+  const columns = [
+    {
+      key: "title",
+      header: "Article",
+      render: (post) => (
+        <div className="space-y-1">
+          <p className="font-medium text-white">{post.title}</p>
+          <p className="text-xs uppercase tracking-[0.22em] text-cyan-100/70">{post.category}</p>
+        </div>
+      ),
+    },
+    {
+      key: "date",
+      header: "Publishing",
+      render: (post) => (
+        <div className="space-y-1 text-sm leading-6 text-slate-300">
+          <p>{post.date || "No publish date"}</p>
+          <p className="text-xs uppercase tracking-[0.22em] text-slate-500">{post.readTime || "No read time"}</p>
+        </div>
+      ),
+    },
+    {
+      key: "excerpt",
+      header: "Excerpt",
+      cellClassName: "max-w-[28rem]",
+      render: (post) => <p className="max-w-[28rem] text-sm leading-7 text-slate-200">{post.excerpt}</p>,
+    },
+  ];
+
   function openCreate() {
     setEditingId(null);
-    setDraft(emptyDraft);
+    setDraft(createEmptyDraft());
     setIsModalOpen(true);
   }
 
@@ -55,7 +98,7 @@ export default function BlogManager() {
   function closeModal() {
     setIsModalOpen(false);
     setEditingId(null);
-    setDraft(emptyDraft);
+    setDraft(createEmptyDraft());
   }
 
   function handleSubmit(event) {
@@ -71,175 +114,159 @@ export default function BlogManager() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-200/70">Blog Manager</p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white">Manage blog content</h1>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
-            Create blog cards for the homepage and edit article body content with a lightweight rich text editor.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={openCreate}
-          className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950"
-        >
-          <Plus size={16} />
-          Add Post
-        </button>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="Blog Manager"
+        title="Publish articles with a cleaner editorial workspace."
+        description="Create, revise, and review blog content inside a premium dashboard surface without changing the underlying CRUD or rich text behavior."
+        meta={
+          <>
+            <AdminBadge tone="cyan">{content.blogPosts.length} total posts</AdminBadge>
+            <AdminBadge tone="violet">Rich body editor</AdminBadge>
+          </>
+        }
+        actions={
+          <AdminButton onClick={openCreate}>
+            <Plus size={16} />
+            Add Post
+          </AdminButton>
+        }
+      />
 
-      <div className="rounded-[1.8rem] border border-white/10 bg-slate-950/60 p-6">
-        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="relative max-w-md flex-1">
-            <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search blog posts"
-              className="w-full rounded-full border border-white/10 bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white outline-none transition focus:border-cyan-300/40"
-            />
+      <AdminCard className="space-y-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <AdminSearchInput
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search blog posts"
+            wrapperClassName="max-w-xl flex-1"
+          />
+          <div className="flex flex-wrap gap-2">
+            <AdminBadge>{filteredPosts.length} visible</AdminBadge>
+            <AdminBadge tone="violet">{query.trim() ? "Filtered articles" : "All articles"}</AdminBadge>
           </div>
-          <p className="text-sm text-slate-500">{filteredPosts.length} posts</p>
         </div>
 
-        <div className="grid gap-4">
-          {filteredPosts.map((post) => (
-            <article
-              key={post.id}
-              className="grid gap-4 rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5 lg:grid-cols-[1fr_auto]"
-            >
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">Title</p>
-                  <p className="mt-2 text-sm leading-7 text-slate-100">{post.title}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">Meta</p>
-                  <p className="mt-2 text-sm leading-7 text-slate-100">
-                    {post.category} · {post.date} · {post.readTime}
-                  </p>
-                </div>
-                <div className="xl:col-span-2">
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">Excerpt</p>
-                  <p className="mt-2 text-sm leading-7 text-slate-100">{post.excerpt}</p>
-                </div>
-              </div>
-
-              <div className="flex items-start justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => openEdit(post)}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-200 transition hover:border-cyan-300/40 hover:text-white"
-                >
-                  <Edit3 size={16} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => deleteItem("blogPosts", post.id)}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-200 transition hover:border-red-400/40 hover:text-red-300"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-md">
-          <div className="w-full max-w-5xl rounded-[2rem] border border-white/10 bg-slate-950 p-6 shadow-[0_30px_120px_rgba(2,8,23,0.5)]">
-            <div className="mb-6 flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">
-                  {editingId ? "Edit post" : "Create post"}
-                </p>
-                <h2 className="mt-2 text-2xl font-semibold text-white">Blog Post</h2>
-              </div>
-              <button
-                type="button"
-                onClick={closeModal}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-slate-300"
+        <AdminDataTable
+          columns={columns}
+          rows={filteredPosts}
+          mobileTitleKey="title"
+          emptyState="No posts matched the current search."
+          renderActions={(post) => (
+            <>
+              <AdminButton variant="secondary" size="icon" onClick={() => openEdit(post)} aria-label="Edit post">
+                <Edit3 size={16} />
+              </AdminButton>
+              <AdminButton
+                variant="danger"
+                size="icon"
+                onClick={() => deleteItem("blogPosts", post.id)}
+                aria-label="Delete post"
               >
-                <X size={18} />
-              </button>
-            </div>
+                <Trash2 size={16} />
+              </AdminButton>
+            </>
+          )}
+        />
+      </AdminCard>
 
-            <form onSubmit={handleSubmit} className="grid gap-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <label>
-                  <span className="mb-2 block text-sm font-medium text-slate-200">Post Title</span>
-                  <input
+      <AdminModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        eyebrow={editingId ? "Edit post" : "Create post"}
+        title={editingId ? "Update blog article" : "Create a new blog article"}
+        description="Use the same premium form rhythm as the rest of the dashboard while keeping the blog editor workflow intact."
+        className="max-w-6xl"
+      >
+        <form onSubmit={handleSubmit} className="grid gap-6 xl:grid-cols-[0.85fr_1.15fr]">
+          <div className="space-y-5">
+            <AdminCard className="space-y-5 p-5">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] text-cyan-100">
+                  <FilePenLine size={18} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white">Post details</h3>
+                  <p className="text-sm text-slate-400">Core metadata used for cards and article previews.</p>
+                </div>
+              </div>
+
+              <div className="grid gap-5">
+                <AdminField label="Post Title">
+                  <AdminInput
                     value={draft.title}
                     onChange={(event) => setDraft((prev) => ({ ...prev, title: event.target.value }))}
-                    className="w-full rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none focus:border-cyan-300/40"
                   />
-                </label>
-                <label>
-                  <span className="mb-2 block text-sm font-medium text-slate-200">Category</span>
-                  <input
-                    value={draft.category}
-                    onChange={(event) => setDraft((prev) => ({ ...prev, category: event.target.value }))}
-                    className="w-full rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none focus:border-cyan-300/40"
-                  />
-                </label>
-                <label>
-                  <span className="mb-2 block text-sm font-medium text-slate-200">Publish Date</span>
-                  <input
+                </AdminField>
+                <div className="grid gap-5 md:grid-cols-2">
+                  <AdminField label="Category">
+                    <AdminInput
+                      value={draft.category}
+                      onChange={(event) => setDraft((prev) => ({ ...prev, category: event.target.value }))}
+                    />
+                  </AdminField>
+                  <AdminField label="Read Time">
+                    <AdminInput
+                      value={draft.readTime}
+                      onChange={(event) => setDraft((prev) => ({ ...prev, readTime: event.target.value }))}
+                    />
+                  </AdminField>
+                </div>
+                <AdminField label="Publish Date">
+                  <AdminInput
                     value={draft.date}
                     onChange={(event) => setDraft((prev) => ({ ...prev, date: event.target.value }))}
-                    className="w-full rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none focus:border-cyan-300/40"
                   />
-                </label>
-                <label>
-                  <span className="mb-2 block text-sm font-medium text-slate-200">Read Time</span>
-                  <input
-                    value={draft.readTime}
-                    onChange={(event) => setDraft((prev) => ({ ...prev, readTime: event.target.value }))}
-                    className="w-full rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none focus:border-cyan-300/40"
+                </AdminField>
+                <AdminField label="Excerpt">
+                  <AdminTextarea
+                    value={draft.excerpt}
+                    onChange={(event) => setDraft((prev) => ({ ...prev, excerpt: event.target.value }))}
+                    rows={5}
                   />
-                </label>
+                </AdminField>
               </div>
+            </AdminCard>
 
-              <label>
-                <span className="mb-2 block text-sm font-medium text-slate-200">Excerpt</span>
-                <textarea
-                  value={draft.excerpt}
-                  onChange={(event) => setDraft((prev) => ({ ...prev, excerpt: event.target.value }))}
-                  rows={4}
-                  className="w-full rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none focus:border-cyan-300/40"
-                />
-              </label>
-
-              <div>
-                <span className="mb-2 block text-sm font-medium text-slate-200">Body</span>
-                <RichTextEditor
-                  value={draft.body}
-                  onChange={(body) => setDraft((prev) => ({ ...prev, body }))}
-                />
+            <AdminCard tone="gradient" className="space-y-4 p-5">
+              <p className="eyebrow-text">Card Preview</p>
+              <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/55 p-5">
+                <p className="text-xs uppercase tracking-[0.24em] text-cyan-100/70">{draft.category || "Category"}</p>
+                <h3 className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white">
+                  {draft.title || "Untitled article"}
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-slate-300">
+                  {draft.excerpt || "Your article excerpt will appear here as you type."}
+                </p>
+                <p className="mt-4 text-xs uppercase tracking-[0.22em] text-slate-500">
+                  {[draft.date || "Publish date", draft.readTime || "Read time"].join(" / ")}
+                </p>
               </div>
-
-              <div className="flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="rounded-full border border-white/10 px-5 py-3 text-sm font-medium text-slate-300"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950"
-                >
-                  {editingId ? "Save Changes" : "Create Post"}
-                </button>
-              </div>
-            </form>
+            </AdminCard>
           </div>
-        </div>
-      )}
+
+          <AdminCard className="space-y-5 p-5">
+            <div>
+              <h3 className="text-lg font-semibold text-white">Article body</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                Format the article body with bold text, lists, and quotes using the existing lightweight editor.
+              </p>
+            </div>
+
+            <RichTextEditor
+              value={draft.body}
+              onChange={(body) => setDraft((prev) => ({ ...prev, body }))}
+            />
+
+            <div className="flex flex-wrap justify-end gap-3">
+              <AdminButton type="button" variant="ghost" onClick={closeModal}>
+                Cancel
+              </AdminButton>
+              <AdminButton type="submit">{editingId ? "Save Changes" : "Create Post"}</AdminButton>
+            </div>
+          </AdminCard>
+        </form>
+      </AdminModal>
     </div>
   );
 }

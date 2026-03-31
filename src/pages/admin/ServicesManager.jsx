@@ -18,6 +18,8 @@ export default function ServicesManager() {
       items={content.services}
       fields={fields}
       searchKeys={["title", "category", "description"]}
+      createLabel="Add Service"
+      entityLabel="Service"
       onAdd={(payload) => addItem("services", payload)}
       onUpdate={(id, payload) => updateItem("services", id, payload)}
       onDelete={(id) => deleteItem("services", id)}

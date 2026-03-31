@@ -36,7 +36,7 @@ export default function Navbar() {
     <>
       <header className="fixed inset-x-0 top-0 z-50 px-4 py-4 sm:px-6 lg:px-8">
         <div className="content-shell">
-          <div className="hidden items-center gap-6 lg:flex">
+          <div className="hidden items-center gap-5 xl:flex">
             <Link to="/" className="flex min-w-0 shrink-0 items-center gap-3 text-white" onClick={() => setMobileOpen(false)}>
               <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-cyan-300 via-sky-500 to-blue-700 text-sm font-semibold text-slate-950 shadow-[0_12px_30px_rgba(14,165,233,0.28)]">
                 FI
@@ -52,7 +52,7 @@ export default function Navbar() {
             <div className="flex flex-1 justify-center">
               <nav
                 className={clsx(
-                  "flex max-w-full flex-wrap items-center justify-center gap-2 rounded-[2rem] px-3 py-3",
+                  "flex max-w-full items-center justify-center gap-2 rounded-full px-3 py-3",
                   floatingPanelClass,
                 )}
               >
@@ -88,7 +88,7 @@ export default function Navbar() {
 
           <div
             className={clsx(
-              "flex items-center justify-between rounded-full border px-4 py-3 sm:px-6 lg:hidden",
+              "flex items-center justify-between rounded-full border px-4 py-3 sm:px-6 xl:hidden",
               floatingPanelClass,
             )}
           >
@@ -122,7 +122,7 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            className="fixed inset-x-4 top-24 z-40 overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/95 p-5 shadow-[0_32px_80px_rgba(2,8,23,0.5)] backdrop-blur-2xl sm:p-6 lg:hidden"
+            className="fixed inset-x-4 top-24 z-40 overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/95 p-5 shadow-[0_32px_80px_rgba(2,8,23,0.5)] backdrop-blur-2xl sm:p-6 xl:hidden"
           >
             <div className="flex flex-col gap-4">
               {publicNavItems.map((item) => (

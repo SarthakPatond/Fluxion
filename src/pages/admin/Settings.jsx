@@ -1,4 +1,15 @@
+import { useEffect, useState } from "react";
+import { Building2, RotateCcw } from "lucide-react";
 import { useSiteContent } from "../../context/SiteContentContext";
+import {
+  AdminBadge,
+  AdminButton,
+  AdminCard,
+  AdminField,
+  AdminInput,
+  AdminPageHeader,
+  AdminTextarea,
+} from "../../components/admin/AdminUI";
 
 const fields = [
   { key: "companyName", label: "Company Name" },
@@ -14,90 +25,113 @@ export default function Settings() {
     updateSettings,
     resetContent,
   } = useSiteContent();
+  const [draft, setDraft] = useState(settings);
+
+  useEffect(() => {
+    setDraft(settings);
+  }, [settings]);
 
   function handleSubmit(event) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
-    updateSettings(
-      fields.reduce((accumulator, field) => {
-        accumulator[field.key] = formData.get(field.key);
-        return accumulator;
-      }, {}),
-    );
+    updateSettings(draft);
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-200/70">Settings</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white">Global website settings</h1>
-        <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
-          Update the shared contact information used in the footer and dashboard previews.
-        </p>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow="Settings"
+        title="Keep the shared company identity polished and up to date."
+        description="These values power the contact details shown throughout the public website and dashboard previews."
+        meta={
+          <>
+            <AdminBadge tone="cyan">Shared configuration</AdminBadge>
+            <AdminBadge tone="violet">Footer aware</AdminBadge>
+          </>
+        }
+      />
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_0.8fr]">
-        <form onSubmit={handleSubmit} className="rounded-[1.8rem] border border-white/10 bg-white/[0.03] p-6">
-          <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-5 xl:grid-cols-[1.02fr_0.98fr]">
+        <AdminCard className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.08] text-cyan-100">
+              <Building2 size={20} />
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-white">Company settings</h2>
+              <p className="text-sm text-slate-400">Contact details, brand identity, and company references in one place.</p>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="grid gap-5 md:grid-cols-2">
             {fields.map((field) => (
-              <label key={field.key} className={field.textarea ? "md:col-span-2" : ""}>
-                <span className="mb-2 block text-sm font-medium text-slate-200">{field.label}</span>
+              <AdminField key={field.key} label={field.label} className={field.textarea ? "md:col-span-2" : ""}>
                 {field.textarea ? (
-                  <textarea
+                  <AdminTextarea
                     name={field.key}
                     rows={4}
-                    defaultValue={settings[field.key]}
-                    className="w-full rounded-[1.2rem] border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none focus:border-cyan-300/40"
+                    value={draft[field.key]}
+                    onChange={(event) => setDraft((prev) => ({ ...prev, [field.key]: event.target.value }))}
                   />
                 ) : (
-                  <input
+                  <AdminInput
                     name={field.key}
-                    defaultValue={settings[field.key]}
-                    className="w-full rounded-[1.2rem] border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none focus:border-cyan-300/40"
+                    value={draft[field.key]}
+                    onChange={(event) => setDraft((prev) => ({ ...prev, [field.key]: event.target.value }))}
                   />
                 )}
-              </label>
+              </AdminField>
             ))}
-          </div>
 
-          <div className="mt-6 flex flex-wrap justify-end gap-3">
-            <button
-              type="button"
-              onClick={resetContent}
-              className="rounded-full border border-white/10 px-5 py-3 text-sm font-medium text-slate-300"
-            >
-              Reset Demo Content
-            </button>
-            <button
-              type="submit"
-              className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950"
-            >
-              Save Settings
-            </button>
-          </div>
-        </form>
+            <div className="md:col-span-2 flex flex-wrap justify-end gap-3 pt-2">
+              <AdminButton type="button" variant="danger" onClick={resetContent}>
+                <RotateCcw size={16} />
+                Reset Demo Content
+              </AdminButton>
+              <AdminButton type="submit">Save Settings</AdminButton>
+            </div>
+          </form>
+        </AdminCard>
 
-        <article className="rounded-[1.8rem] border border-white/10 bg-[linear-gradient(135deg,rgba(34,211,238,0.14),rgba(255,255,255,0.03),rgba(250,204,21,0.1))] p-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-100/75">Live Contact Preview</p>
-          <div className="mt-6 space-y-4 text-sm leading-7 text-slate-200">
-            <p>
-              <span className="text-slate-400">Company:</span> {settings.companyName}
+        <div className="grid gap-5">
+          <AdminCard tone="gradient" className="space-y-5">
+            <div>
+              <p className="eyebrow-text">Live Contact Preview</p>
+              <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-white">{draft.companyName}</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-300">
+                Review the exact company information surfaced in the website footer and contact areas.
+              </p>
+            </div>
+
+            <div className="grid gap-3">
+              <div className="rounded-[1.4rem] border border-white/10 bg-slate-950/55 p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">Email</p>
+                <p className="mt-2 text-sm font-medium text-white">{draft.email}</p>
+              </div>
+              <div className="rounded-[1.4rem] border border-white/10 bg-slate-950/55 p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">Phone</p>
+                <p className="mt-2 text-sm font-medium text-white">{draft.phone}</p>
+              </div>
+              <div className="rounded-[1.4rem] border border-white/10 bg-slate-950/55 p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">WhatsApp</p>
+                <p className="mt-2 text-sm font-medium text-white">{draft.whatsapp}</p>
+              </div>
+              <div className="rounded-[1.4rem] border border-white/10 bg-slate-950/55 p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">Address</p>
+                <p className="mt-2 text-sm leading-7 text-white">{draft.address}</p>
+              </div>
+            </div>
+          </AdminCard>
+
+          <AdminCard className="space-y-4">
+            <h2 className="text-xl font-semibold text-white">Reset behavior</h2>
+            <p className="text-sm leading-7 text-slate-400">
+              Resetting demo content restores the original local dataset for services, blog posts, careers, media, and settings.
             </p>
-            <p>
-              <span className="text-slate-400">Email:</span> {settings.email}
+            <p className="text-sm leading-7 text-slate-400">
+              This action keeps the admin logic untouched and only swaps the stored content payload back to its seeded state.
             </p>
-            <p>
-              <span className="text-slate-400">Phone:</span> {settings.phone}
-            </p>
-            <p>
-              <span className="text-slate-400">WhatsApp:</span> {settings.whatsapp}
-            </p>
-            <p>
-              <span className="text-slate-400">Address:</span> {settings.address}
-            </p>
-          </div>
-        </article>
+          </AdminCard>
+        </div>
       </div>
     </div>
   );

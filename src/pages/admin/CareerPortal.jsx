@@ -18,6 +18,8 @@ export default function CareerPortal() {
       items={content.careers}
       fields={fields}
       searchKeys={["title", "location", "summary", "type"]}
+      createLabel="Add Role"
+      entityLabel="Role"
       onAdd={(payload) => addItem("careers", payload)}
       onUpdate={(id, payload) => updateItem("careers", id, payload)}
       onDelete={(id) => deleteItem("careers", id)}

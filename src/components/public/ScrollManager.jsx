@@ -1,6 +1,16 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
+function getHeaderOffset() {
+  const header = document.querySelector("header");
+
+  if (!header) {
+    return 112;
+  }
+
+  return Math.ceil(header.getBoundingClientRect().height) + 20;
+}
+
 export default function ScrollManager() {
   const location = useLocation();
 
@@ -15,7 +25,8 @@ export default function ScrollManager() {
     const frame = window.requestAnimationFrame(() => {
       const element = document.getElementById(hash);
       if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        const top = element.getBoundingClientRect().top + window.scrollY - getHeaderOffset();
+        window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
       }
     });
 

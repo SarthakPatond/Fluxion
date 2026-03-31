@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Bold, Italic, List, Quote } from "lucide-react";
+import { AdminCard, AdminButton } from "./AdminUI";
 
 const actions = [
   { label: "Bold", icon: Bold, command: "bold" },
@@ -24,20 +25,22 @@ export default function RichTextEditor({ value, onChange }) {
   }
 
   return (
-    <div className="rounded-[1.4rem] border border-white/10 bg-slate-950/70">
-      <div className="flex flex-wrap gap-2 border-b border-white/10 p-3">
+    <AdminCard className="overflow-hidden p-0">
+      <div className="flex flex-wrap items-center gap-2 border-b border-white/10 bg-white/[0.03] p-3">
         {actions.map((action) => {
           const Icon = action.icon;
           return (
-            <button
+            <AdminButton
               key={action.label}
               type="button"
+              variant="secondary"
+              size="icon"
               onClick={() => applyCommand(action.command, action.value)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-200 transition hover:border-cyan-300/40 hover:text-white"
+              className="h-10 w-10 rounded-2xl"
               aria-label={action.label}
             >
               <Icon size={16} />
-            </button>
+            </AdminButton>
           );
         })}
       </div>
@@ -47,8 +50,8 @@ export default function RichTextEditor({ value, onChange }) {
         contentEditable
         suppressContentEditableWarning
         onInput={(event) => onChange(event.currentTarget.innerHTML)}
-        className="min-h-[220px] w-full px-4 py-4 text-sm leading-7 text-slate-100 outline-none [&_blockquote]:border-l-2 [&_blockquote]:border-cyan-300/40 [&_blockquote]:pl-4 [&_li]:ml-5 [&_p]:mb-3 [&_ul]:list-disc"
+        className="admin-editor-content min-h-[260px] w-full px-5 py-4 text-sm leading-7 text-slate-100 outline-none"
       />
-    </div>
+    </AdminCard>
   );
 }

@@ -51,23 +51,26 @@ function ServiceIcon({ icon }) {
 
 function ServiceVisual({ service, detail }) {
   return (
-    <div className="relative min-h-60 overflow-hidden rounded-[1.6rem] border border-white/10 bg-slate-950/70">
+    <div className="relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-slate-950/70">
       <div className={`absolute inset-0 bg-gradient-to-br ${detail.accent} opacity-90`} />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_35%),linear-gradient(180deg,rgba(2,6,23,0.08),rgba(2,6,23,0.72))]" />
-      <div className="absolute inset-x-4 top-4 flex items-center justify-between gap-3 sm:inset-x-5 sm:top-5">
-        <span className="text-safe rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/75 sm:tracking-[0.28em]">
-          {detail.label}
-        </span>
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/60">
-          <ServiceIcon icon={service.icon} />
-        </div>
-      </div>
-      <div className="absolute inset-x-4 bottom-4 grid gap-3 rounded-[1.3rem] border border-white/10 bg-slate-950/55 p-3 backdrop-blur-xl sm:inset-x-5 sm:bottom-5 sm:grid-cols-3 sm:p-4">
-        {detail.metrics.map((metric) => (
-          <div key={metric} className="text-safe rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-slate-100">
-            {metric}
+      <div className="relative flex min-h-60 flex-col justify-between gap-8 p-4 sm:min-h-64 sm:p-5">
+        <div className="flex items-start justify-between gap-3">
+          <span className="text-safe rounded-full border border-white/10 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/75 sm:tracking-[0.28em]">
+            {detail.label}
+          </span>
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/60">
+            <ServiceIcon icon={service.icon} />
           </div>
-        ))}
+        </div>
+
+        <div className="grid gap-3 rounded-[1.3rem] border border-white/10 bg-slate-950/55 p-3 backdrop-blur-xl sm:grid-cols-3 sm:p-4">
+          {detail.metrics.map((metric) => (
+            <div key={metric} className="text-safe rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-slate-100">
+              {metric}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

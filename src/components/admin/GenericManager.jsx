@@ -1,6 +1,18 @@
 import { useMemo, useState } from "react";
-import { Edit3, Plus, Search, Trash2, X } from "lucide-react";
+import { Edit3, Plus, Trash2 } from "lucide-react";
 import clsx from "clsx";
+import {
+  AdminBadge,
+  AdminButton,
+  AdminCard,
+  AdminDataTable,
+  AdminField,
+  AdminInput,
+  AdminModal,
+  AdminPageHeader,
+  AdminSearchInput,
+  AdminTextarea,
+} from "./AdminUI";
 
 function EmptyValue({ value }) {
   if (value === undefined || value === null || value === "") {
@@ -11,6 +23,7 @@ function EmptyValue({ value }) {
 }
 
 export default function GenericManager({
+  eyebrow = "Content Module",
   title,
   description,
   items,
@@ -19,6 +32,9 @@ export default function GenericManager({
   onAdd,
   onUpdate,
   onDelete,
+  createLabel = "Add New",
+  emptyState = "No content matched the current search.",
+  entityLabel,
 }) {
   const [query, setQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,6 +51,22 @@ export default function GenericManager({
       searchKeys.some((key) => String(item[key] ?? "").toLowerCase().includes(lowered)),
     );
   }, [items, query, searchKeys]);
+
+  const columns = useMemo(
+    () =>
+      fields.map((field) => ({
+        key: field.name,
+        header: field.label,
+        cellClassName: field.long ? "max-w-[24rem]" : "",
+        render: (item) => (
+          <div className={clsx("text-sm leading-7 text-slate-200", field.long && "max-w-[24rem]")}>
+            {field.render ? field.render(item) : <EmptyValue value={item[field.name]} />}
+          </div>
+        ),
+      })),
+    [fields],
+  );
+  const resolvedEntityLabel = entityLabel ?? title.replace(/\s+(Manager|Portal)$/u, "").trim();
 
   function openCreateModal() {
     setIsModalOpen(true);
@@ -70,145 +102,106 @@ export default function GenericManager({
 
     closeModal();
   }
+
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-200/70">
-            Content Module
-          </p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white">{title}</h1>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">{description}</p>
-        </div>
-        <button
-          type="button"
-          onClick={openCreateModal}
-          className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:scale-[1.02]"
-        >
-          <Plus size={16} />
-          Add New
-        </button>
-      </div>
+    <div className="space-y-8">
+      <AdminPageHeader
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
+        meta={
+          <>
+            <AdminBadge tone="cyan">{items.length} total entries</AdminBadge>
+            <AdminBadge>{fields.length} editable fields</AdminBadge>
+          </>
+        }
+        actions={
+          <AdminButton onClick={openCreateModal}>
+            <Plus size={16} />
+            {createLabel}
+          </AdminButton>
+        }
+      />
 
-      <div className="rounded-[1.8rem] border border-white/10 bg-slate-950/60 p-6">
-        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="relative max-w-md flex-1">
-            <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder={`Search ${title.toLowerCase()}`}
-              className="w-full rounded-full border border-white/10 bg-white/[0.04] py-3 pl-11 pr-4 text-sm text-white outline-none transition focus:border-cyan-300/40"
-            />
+      <AdminCard className="space-y-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <AdminSearchInput
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={`Search ${title.toLowerCase()}`}
+            wrapperClassName="max-w-xl flex-1"
+          />
+          <div className="flex flex-wrap gap-2">
+            <AdminBadge>{filteredItems.length} visible</AdminBadge>
+            <AdminBadge tone="violet">{query.trim() ? "Filtered view" : "All records"}</AdminBadge>
           </div>
-          <p className="text-sm text-slate-500">{filteredItems.length} items</p>
         </div>
 
-        <div className="grid gap-4">
-          {filteredItems.map((item) => (
-            <article
-              key={item.id}
-              className="grid gap-4 rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5 lg:grid-cols-[1fr_auto]"
-            >
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {fields.map((field) => (
-                  <div key={field.name}>
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">
-                      {field.label}
-                    </p>
-                    <div className={clsx("mt-2 text-sm leading-7 text-slate-100", field.long && "max-w-xl")}>
-                      <EmptyValue value={item[field.name]} />
-                    </div>
-                  </div>
-                ))}
-              </div>
+        <AdminDataTable
+          columns={columns}
+          rows={filteredItems}
+          mobileTitleKey={fields[0]?.name}
+          emptyState={emptyState}
+          renderActions={(item) => (
+            <>
+              <AdminButton
+                variant="secondary"
+                size="icon"
+                onClick={() => openEditModal(item)}
+                aria-label={`Edit ${title}`}
+              >
+                <Edit3 size={16} />
+              </AdminButton>
+              <AdminButton
+                variant="danger"
+                size="icon"
+                onClick={() => onDelete(item.id)}
+                aria-label={`Delete ${title}`}
+              >
+                <Trash2 size={16} />
+              </AdminButton>
+            </>
+          )}
+        />
+      </AdminCard>
 
-              <div className="flex items-start justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => openEditModal(item)}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-200 transition hover:border-cyan-300/40 hover:text-white"
-                >
-                  <Edit3 size={16} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onDelete(item.id)}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-200 transition hover:border-red-400/40 hover:text-red-300"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
-            </article>
+      <AdminModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        eyebrow={editingItem ? "Edit entry" : "Create entry"}
+        title={editingItem ? `Update ${resolvedEntityLabel}` : `Create ${resolvedEntityLabel}`}
+        description="Refined spacing, stronger hierarchy, and consistent controls keep content editing fast and predictable."
+        className="max-w-4xl"
+      >
+        <form onSubmit={handleSubmit} className="grid gap-5 md:grid-cols-2">
+          {fields.map((field) => (
+            <AdminField key={field.name} label={field.label} className={field.long ? "md:col-span-2" : ""}>
+              {field.type === "textarea" ? (
+                <AdminTextarea
+                  value={draft[field.name]}
+                  onChange={(event) => setDraft((prev) => ({ ...prev, [field.name]: event.target.value }))}
+                  rows={field.rows ?? 5}
+                  placeholder={field.placeholder}
+                />
+              ) : (
+                <AdminInput
+                  value={draft[field.name]}
+                  onChange={(event) => setDraft((prev) => ({ ...prev, [field.name]: event.target.value }))}
+                  placeholder={field.placeholder}
+                  type={field.inputType ?? "text"}
+                />
+              )}
+            </AdminField>
           ))}
 
-          {filteredItems.length === 0 && (
-            <div className="rounded-[1.6rem] border border-dashed border-white/10 px-6 py-12 text-center text-sm text-slate-500">
-              No content matched the current search.
-            </div>
-          )}
-        </div>
-      </div>
-
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-md">
-          <div className="w-full max-w-3xl rounded-[2rem] border border-white/10 bg-slate-950 p-6 shadow-[0_30px_120px_rgba(2,8,23,0.5)]">
-            <div className="mb-6 flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">
-                  {editingItem ? "Edit item" : "Create item"}
-                </p>
-                <h2 className="mt-2 text-2xl font-semibold text-white">{title}</h2>
-              </div>
-              <button
-                type="button"
-                onClick={closeModal}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-slate-300"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">
-              {fields.map((field) => (
-                <label key={field.name} className={clsx("block", field.long && "md:col-span-2")}>
-                  <span className="mb-2 block text-sm font-medium text-slate-200">{field.label}</span>
-                  {field.type === "textarea" ? (
-                    <textarea
-                      value={draft[field.name]}
-                      onChange={(event) => setDraft((prev) => ({ ...prev, [field.name]: event.target.value }))}
-                      rows={5}
-                      className="w-full rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300/40"
-                    />
-                  ) : (
-                    <input
-                      value={draft[field.name]}
-                      onChange={(event) => setDraft((prev) => ({ ...prev, [field.name]: event.target.value }))}
-                      className="w-full rounded-[1.2rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300/40"
-                    />
-                  )}
-                </label>
-              ))}
-
-              <div className="md:col-span-2 mt-2 flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="rounded-full border border-white/10 px-5 py-3 text-sm font-medium text-slate-300"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950"
-                >
-                  {editingItem ? "Save Changes" : "Create"}
-                </button>
-              </div>
-            </form>
+          <div className="md:col-span-2 flex flex-wrap justify-end gap-3 pt-2">
+            <AdminButton type="button" variant="ghost" onClick={closeModal}>
+              Cancel
+            </AdminButton>
+            <AdminButton type="submit">{editingItem ? "Save Changes" : "Create Entry"}</AdminButton>
           </div>
-        </div>
-      )}
+        </form>
+      </AdminModal>
     </div>
   );
 }
